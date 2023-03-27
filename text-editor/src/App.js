@@ -1,10 +1,12 @@
 import logo from './logo.svg';
 import './App.css';
+import KeyBoard from './components/KeyBoard';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
+        <KeyBoard />
         <h1>hi</h1>
         <img src={logo} className="App-logo" alt="logo" />
         <p>
