@@ -1,12 +1,20 @@
 import logo from './logo.svg';
 import './App.css';
 import KeyBoard from './components/KeyBoard';
+import TextEditor from './components/TextEditor';
+import Charcomp from './components/Char';
+import Language from './components/Language';
 
 function App() {
   return (
     <div className="App">
+      <Charcomp />
+      <Language />
+      <KeyBoard />
+      <TextEditor/>
       <header className="App-header">
-        <KeyBoard />
+        <h1>hi</h1>
+        
         <h1>hi</h1>
         <img src={logo} className="App-logo" alt="logo" />
         <p>
