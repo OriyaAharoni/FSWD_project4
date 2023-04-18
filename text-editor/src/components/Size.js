@@ -5,7 +5,13 @@ const sizes = [12, 18, 24, 30];
 class Size extends React.Component {
   render() {
     const sizesComponent = sizes.map((s) => (
-      <button onClick={() => this.props.onClick(s)}>{s}</button>
+      <button
+        key={s.toString()}
+        className="options"
+        onClick={() => this.props.onClick(s)}
+      >
+        {s}
+      </button>
     ));
     return (
       <div>

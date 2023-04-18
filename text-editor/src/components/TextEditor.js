@@ -4,11 +4,12 @@ import Size from "./Size";
 import Color from "./Color";
 import Space from "./Space";
 import Special from "./Special";
+import "../index.css";
 
 const english = [
   ["p", "o", "i", "u", "y", "t", "r", "e", "w", "q"],
   ["l", "k", "j", "h", "g", "f", "d", "s", "a"],
-  ["m", "n", "b", "v", "c", "x", "z"],
+  [".", "m", "n", "b", "v", "c", "x", "z"],
 ];
 const hebrew = [
   ["פ", "ם", "ן", "ו", "ט", "א", "ר", "ק", "'", "/"],
@@ -20,20 +21,29 @@ const emoji = [
   ["🤖", "👽", "👻", "🤡", "💩", "🙈", "🙉", "🙊", "🦄"],
   ["🐶", "🐱", "🐭", "🐹", "🐰", "🐻", "🐨", "🐼"],
 ];
+const capsLock = [
+  ["P", "O", "I", "U", "Y", "T", "R", "E", "W", "Q"],
+  ["L", "K", "J", "H", "G", "F", "D", "S", "A"],
+  [".", "M", "N", "B", "V", "C", "X", "Z"],
+];
+
+let theText = [{ value: "", style: {} }];
 
 class TextEditor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       letters: english,
+      allText: theText,
       input: "",
-      color: "red",
+      color: "black",
       fontSize: 20,
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleChangeSize = this.handleChangeSize.bind(this);
     this.handleChangeText = this.handleChangeText.bind(this);
-    //this.handleTextChange = this.handleTextChange.bind(this);
+    this.handleChangeInput = this.handleChangeInput.bind(this);
+    this.handleChangeColor = this.handleChangeColor.bind(this);
   }
 
   handleClick(type) {
@@ -48,71 +58,110 @@ class TextEditor extends React.Component {
       case "emoji":
         language = emoji;
         break;
+      case "caps lock":
+        language = capsLock;
+        break;
     }
     this.setState({ letters: language });
   }
 
   handleChangeInput(char) {
-    this.setState({ input: this.state.input + char });
+    let newElement = {
+      value: char,
+      style: { fontSize: this.state.fontSize, color: this.state.color },
+    };
+    theText.push(newElement);
+    this.setState({ allText: theText });
   }
 
   handleChangeSize(size) {
     this.setState({ fontSize: size });
-    // var text = document.getElementById("input");
-    // text.style.fontSize = "50px";
+  }
+
+  handleChangeColor(color) {
+    let newColor;
+    switch (color) {
+      case "שחור":
+        newColor = "black";
+        break;
+      case "ירוק":
+        newColor = "green";
+        break;
+      case "אדום":
+        newColor = "red";
+        break;
+      case "כחול":
+        newColor = "blue";
+        break;
+    }
+    this.setState({ color: newColor });
   }
 
   handleChangeText(type) {
-    let text;
+    let newElement;
     switch (type) {
       case "delete":
-        text = this.state.input.substring(0, this.state.input.length - 1);
+        theText.pop();
         break;
       case "space":
-        text = this.state.input + " ";
+        newElement = {
+          value: " ",
+          style: { fontSize: this.state.fontSize, color: this.state.color },
+        };
+        theText.push(newElement);
         break;
-      case "enter":
-        text = this.state.input + "\n";
+      case "caps lock":
+        this.handleClick("caps lock");
         break;
       case "clear all":
-        text = " ";
+        theText = theText.slice(0, 1);
         break;
       case "lower all":
-        text = this.state.input.toLowerCase();
+        for (const obj of theText) {
+          obj.value = obj.value.toLowerCase();
+        }
         break;
       case "upper all":
-        text = this.state.input.toUpperCase();
+        console.log(theText);
+        for (const obj of theText) {
+          obj.value = obj.value.toUpperCase();
+        }
+        console.log(theText);
         break;
     }
-    this.setState({ input: text });
+    this.setState({ allText: theText });
   }
 
-  // handleTextChange(event) {
-  //   this.setState({ input: event.target.value });
-  // }
-
   render() {
-    const charComponent = this.state.letters.map((nested) => (
-      <div>
-        {nested.map((c) => (
-          <button onClick={() => this.handleChangeInput(c)}>{c}</button>
+    const charComponent = this.state.letters.map((nested, index) => (
+      <div key={index}>
+        {nested.map((c, index) => (
+          <button
+            key={index}
+            className="letters"
+            onClick={() => this.handleChangeInput(c)}
+          >
+            {c}
+          </button>
         ))}
       </div>
     ));
 
     return (
       <div>
-        <textarea
-          id="input"
-          value={this.state.input}
-          style={{ color: this.state.color, fontSize: this.state.fontSize }}
-          //onChange={this.handleTextChange}
-        />
+        <div className="text">
+          <br></br>
+          {this.state.allText.map((l, index) => (
+            <span key={index} className="char" style={l.style}>
+              {l.value}
+            </span>
+          ))}
+        </div>
         <div>{charComponent}</div>
         <Space onClick={this.handleChangeText} />
         <Language onClick={this.handleClick} />
         <Size onClick={this.handleChangeSize} />
-        <Color />
+        <Color onClick={this.handleChangeColor} />
         <Special onClick={this.handleChangeText} />
       </div>
     );

@@ -9,7 +9,13 @@ const buttons = [
 class Special extends React.Component {
   render() {
     const buttonsComponent = buttons.map((btn) => (
-      <button onClick={() => this.props.onClick(btn.type)}>{btn.type}</button>
+      <button
+        className="options"
+        key={btn.id}
+        onClick={() => this.props.onClick(btn.type)}
+      >
+        {btn.type}
+      </button>
     ));
     return (
       <div>

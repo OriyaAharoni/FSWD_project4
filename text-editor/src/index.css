@@ -5,6 +5,44 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #FAF0EF;
+  color: #550358;
+  
+}
+
+
+.letters{
+  width: 5em;
+  background-color: rgb(248, 228, 248) ;
+  font-size: 14px;
+  border-radius: 0.2em;
+  border-width: 0.1em;
+  border-color:  #29022b;
+  padding: 5px;
+  
+  
+}
+
+.options{
+  width: 5.5em;
+  height: 2em;
+  font-size: 14px;
+  background-color: plum ;
+  border-width: 0.01em;
+  border-radius: 0.3em;
+  border-color:  #550358;
+}
+
+.text{
+  height: 5em;
+  text-align: center;
+  padding: 0em;
+}
+
+.char{
+  text-align: center;
+  margin-bottom: 2em;
+
 }
 
 code {
