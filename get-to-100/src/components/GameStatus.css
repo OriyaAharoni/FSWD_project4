@@ -1,0 +1,34 @@
+.game-status {
+    position: relative;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+  }
+  
+  .circle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+  }
+  
+  .active .circle {
+    background-color: green;
+  }
+  
+  .inactive .circle {
+    background-color: red;
+  }
+  
+  .flashing {
+    animation: flashing-animation 0.5s infinite;
+  }
+  
+  @keyframes flashing-animation {
+    50% {
+      opacity: 0.5;
+    }
+  }
+  

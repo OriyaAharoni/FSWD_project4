@@ -1,0 +1,30 @@
+.game-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .game-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  
+  .game-row:last-child {
+    margin-bottom: 0;
+  }
+  
+  .game-board {
+    margin: 0 8px;
+  }
+  
+  @media (max-width: 480px) {
+    .game-board {
+      margin: 0 4px;
+    }
+  }
+  
