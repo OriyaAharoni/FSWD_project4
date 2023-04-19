@@ -11,9 +11,11 @@ class GameStatus extends Component {
     };
 
     this.toggleFlashing = this.toggleFlashing.bind(this);
+    this.componentDidUpdate = this.componentDidUpdate.bind(this);
   }
 
   componentDidUpdate(prevProps) {
+    console.log(prevProps);
     if (prevProps.isActive !== this.props.isActive) {
       this.setState({ isActive: this.props.isActive });
       this.toggleFlashing();
@@ -21,7 +23,7 @@ class GameStatus extends Component {
   }
 
   toggleFlashing() {
-    if (this.state.isActive) {
+    if (this.props.isActive) {
       this.setState(prevState => ({ isFlashing: !prevState.isFlashing }));
       setTimeout(this.toggleFlashing, 500);
     } else {

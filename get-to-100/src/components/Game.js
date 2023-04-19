@@ -15,49 +15,65 @@ class Game extends Component {
     };
   }
 
-  activeNextPlayer = () => {
-    temp = [...this.state.gameBoards]; 
-    const currentGameBoardIndex = this.state.currentGameBoardIndex;
-    if (this.state.gameBoards[currentGameBoardIndex] && this.state.gameBoards[currentGameBoardIndex].props) { 
-      temp[currentGameBoardIndex] = React.cloneElement(temp[currentGameBoardIndex], {isActive: false}); 
-    }
-    const nextIndex = (currentGameBoardIndex+1) % this.state.gameBoards.length;
-    if (this.state.gameBoards[nextIndex] && this.state.gameBoards[nextIndex].props) { 
-      temp[nextIndex] = React.cloneElement(temp[nextIndex], {isActive: true}); 
+  activatePlayer = (index) => {
+    temp = [...this.state.gameBoards]; // create a new copy of the gameBoards array
+    if (this.state.gameBoards[index] && this.state.gameBoards[index].props) { // check if the first element and its props object exist
+      temp[index] = React.cloneElement(temp[index], {isActive: true}); // modify the isActive prop of the first element
     }
     console.log(temp);
-    this.setState({ gameBoards: temp }); // update the state with the new gameBoards array
-    console.log(this.state.gameBoards);
-    this.setState({ currentGameBoardIndex: nextIndex });
+    this.setState({ gameBoards: temp }, () => {
+      console.log('this is activate player faunction: ',this.state.gameBoards);
+    });
+    this.setState({currentGameBoardIndex: index})
   }
+
+  inactivatePlayer = (index) => {
+    temp = [...this.state.gameBoards]; // create a new copy of the gameBoards array
+    if (this.state.gameBoards[index] && this.state.gameBoards[index].props) { // check if the first element and its props object exist
+      temp[index] = React.cloneElement(temp[index], {isActive: false}); // modify the isActive prop of the first element
+    }
+    console.log(temp);
+    this.setState({ gameBoards: temp }, () => {
+      console.log(this.state.gameBoards);
+    });
+  }
+
+  activeNextPlayer = () => {
+    this.inactivatePlayer(this.state.currentGameBoardIndex);
+    this.activatePlayer(this.state.currentGameBoardIndex+1);
+    // this.setState({ currentGameBoardIndex: this.state.currentGameBoardIndex+1 });
+  }
+
+  // addPlayer = (playerName) => {
+  //   // Create a new game board component and add it to the list of game boards
+  //   const newGameBoard = <GameBoard key={this.state.gameBoards.length+1} gamerName={playerName} isActive={false} activeNextPlayer={this.activeNextPlayer}/>;
+  //   this.state.gameBoards.push(newGameBoard);
+  //   this.setState();  
+  // }
 
   addPlayer = (playerName) => {
     // Create a new game board component and add it to the list of game boards
     const newGameBoard = <GameBoard key={this.state.gameBoards.length+1} gamerName={playerName} isActive={false} activeNextPlayer={this.activeNextPlayer}/>;
-    temp.push(newGameBoard);
-    this.setState({ gameBoards: temp }, () => {
-      console.log(this.state.gameBoards); // log the updated gameBoards array
-    });      
-  }
+    
+    this.setState(prevState => ({
+      gameBoards: [...prevState.gameBoards, newGameBoard]
+    }));
+  };
+  
 
   startGame = () => {
-    temp = [...this.state.gameBoards]; // create a new copy of the gameBoards array
-    if (this.state.gameBoards[0] && this.state.gameBoards[0].props) { // check if the first element and its props object exist
-      temp[0] = React.cloneElement(temp[0], {isActive: true}); // modify the isActive prop of the first element
-    }
-    console.log(temp);
-    this.setState({ gameBoards: temp }); // update the state with the new gameBoards array
-    console.log(this.state.gameBoards);
-    this.setState({ currentGameBoardIndex: 0 }); // set the currentGameBoard state to the first board in the new array
+    this.activatePlayer(0);
   }
 
   render() {
-    const boards = this.state.gameBoards;
+    // const boards = this.state.gameBoards;
+    console.log('this is game render: ',this.state.gameBoards);
     return (
       <div>
         <AddPlayerButton addPlayer={this.addPlayer} />
         <StartGameButton startGame={this.startGame} />
-        {boards}
+        <div>{this.state.gameBoards}</div>
+        {/* {this.state.gameBoards} */}
       </div>
     );
   }

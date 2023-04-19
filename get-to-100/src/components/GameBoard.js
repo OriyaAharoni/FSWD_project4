@@ -21,7 +21,6 @@ class GameBoard extends React.Component {
   onOperationClik = (operation, startNum) => {
     this.setState({ startNum: this.startNumUpdate(operation, startNum)});
     this.setState({ stepCounter: this.state.stepCounter + 1 });
-    this.setState({isActive: true});
     this.props.activeNextPlayer();
   }
 
@@ -42,12 +41,12 @@ class GameBoard extends React.Component {
   }
 
   render() {
-    const operations = this.state.gameOperations.map(op=><button disabled={!this.state.isActive} onClick={() => this.onOperationClik(op, this.state.startNum)}>{op}</button> )
+    const operations = this.state.gameOperations.map(op=><button disabled={!this.props.isActive} onClick={() => this.onOperationClik(op, this.state.startNum)}>{op}</button> )
     return (      
       <div>
         <div style={{ display: 'inline-flex' }}>
           <h3>Gamer name: {this.state.gamerName}</h3>
-          <GameStatus isActive={this.state.isActive}/>
+          <GameStatus isActive={this.props.isActive} />
         </div>
         <h3>Current number: {this.state.startNum}</h3>
         <h3>Step number: {this.state.stepCounter}</h3>
