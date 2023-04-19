@@ -15,17 +15,12 @@ class GameBoard extends React.Component {
       gameOperations: operations
     }
     this.onOperationClik = this.onOperationClik.bind(this);
-    this.handleStatusChange = this.handleStatusChange.bind(this);
   }
 
   onOperationClik = (operation, startNum) => {
     this.setState({ startNum: this.startNumUpdate(operation, startNum)});
     this.setState({ stepCounter: this.state.stepCounter + 1 });
     this.props.activeNextPlayer();
-  }
-
-  handleStatusChange(isActive) {
-    this.setState({ isActive });
   }
 
   startNumUpdate = (operation, startNum) => {

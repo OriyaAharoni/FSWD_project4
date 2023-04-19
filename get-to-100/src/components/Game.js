@@ -20,20 +20,23 @@ class Game extends Component {
     if (this.state.gameBoards[index] && this.state.gameBoards[index].props) { // check if the first element and its props object exist
       temp[index] = React.cloneElement(temp[index], {isActive: true}); // modify the isActive prop of the first element
     }
-    console.log(temp);
-    this.setState({ gameBoards: temp }, () => {
-      console.log('this is activate player faunction: ',this.state.gameBoards);
+    this.setState({ 
+      gameBoards: temp,
+      currentGameBoardIndex: index // combine both state updates into one call
+    }, () => {
+      console.log(this.state.gameBoards);
     });
-    this.setState({currentGameBoardIndex: index})
   }
 
   inactivatePlayer = (index) => {
-    temp = [...this.state.gameBoards]; // create a new copy of the gameBoards array
+    const temp = [...this.state.gameBoards]; // create a new copy of the gameBoards array
     if (this.state.gameBoards[index] && this.state.gameBoards[index].props) { // check if the first element and its props object exist
       temp[index] = React.cloneElement(temp[index], {isActive: false}); // modify the isActive prop of the first element
     }
     console.log(temp);
-    this.setState({ gameBoards: temp }, () => {
+    this.setState({ 
+      gameBoards: temp
+    }, () => {
       console.log(this.state.gameBoards);
     });
   }
@@ -72,7 +75,7 @@ class Game extends Component {
       <div>
         <AddPlayerButton addPlayer={this.addPlayer} />
         <StartGameButton startGame={this.startGame} />
-        <div>{this.state.gameBoards}</div>
+        <div className='game-container'>{this.state.gameBoards}</div>
         {/* {this.state.gameBoards} */}
       </div>
     );
