@@ -28,35 +28,28 @@ class Game extends Component {
     });
   }
 
-  inactivatePlayer = (index) => {
-    const temp = [...this.state.gameBoards]; // create a new copy of the gameBoards array
+  activeNextPlayer = () => {
+    // this.inactivatePlayer(this.state.currentGameBoardIndex);
+    // this.activatePlayer(this.state.currentGameBoardIndex+1);
+    // // this.setState({ currentGameBoardIndex: this.state.currentGameBoardIndex+1 });
+    const index = this.state.currentGameBoardIndex;
+    const nextIndex = (index+1) % this.state.gameBoards.length;
+    temp = [...this.state.gameBoards]; // create a new copy of the gameBoards array
     if (this.state.gameBoards[index] && this.state.gameBoards[index].props) { // check if the first element and its props object exist
       temp[index] = React.cloneElement(temp[index], {isActive: false}); // modify the isActive prop of the first element
+      temp[nextIndex] = React.cloneElement(temp[nextIndex], {isActive: true});
     }
-    console.log(temp);
     this.setState({ 
-      gameBoards: temp
+      gameBoards: temp,
+      currentGameBoardIndex: nextIndex // combine both state updates into one call
     }, () => {
       console.log(this.state.gameBoards);
     });
   }
 
-  activeNextPlayer = () => {
-    this.inactivatePlayer(this.state.currentGameBoardIndex);
-    this.activatePlayer(this.state.currentGameBoardIndex+1);
-    // this.setState({ currentGameBoardIndex: this.state.currentGameBoardIndex+1 });
-  }
-
-  // addPlayer = (playerName) => {
-  //   // Create a new game board component and add it to the list of game boards
-  //   const newGameBoard = <GameBoard key={this.state.gameBoards.length+1} gamerName={playerName} isActive={false} activeNextPlayer={this.activeNextPlayer}/>;
-  //   this.state.gameBoards.push(newGameBoard);
-  //   this.setState();  
-  // }
-
   addPlayer = (playerName) => {
     // Create a new game board component and add it to the list of game boards
-    const newGameBoard = <GameBoard key={this.state.gameBoards.length+1} gamerName={playerName} isActive={false} activeNextPlayer={this.activeNextPlayer}/>;
+    const newGameBoard = <GameBoard  key={this.state.gameBoards.length+1} gamerName={playerName} isActive={false} activeNextPlayer={this.activeNextPlayer}/>;
     
     this.setState(prevState => ({
       gameBoards: [...prevState.gameBoards, newGameBoard]
