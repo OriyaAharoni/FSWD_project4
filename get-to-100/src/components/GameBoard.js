@@ -21,10 +21,11 @@ class GameBoard extends React.Component {
 
   onOperationClik = (operation, startNum) => {
     if(operation === 'exit'){
-
+      this.props.removePlayer(this.props.gamerName);
     }
     else if (operation === 'Start new game'){
       this.setState({startNum: Math.floor(Math.random() * 100), stepCounter: 0, operations: gameOperations });
+      this.props.activeNextPlayer();
     }
     else{
       const updateNum = this.startNumUpdate(operation, startNum);
@@ -35,10 +36,11 @@ class GameBoard extends React.Component {
         this.setState(prevState => ({
           victoryCounter: [...prevState.victoryCounter, updateCounter, ' '],
           operations: endGameOperation
-        }));
-    }
+        }));      
+      }
+      this.props.activeNextPlayer();
     }    
-    this.props.activeNextPlayer();
+    
   }
 
   startNumUpdate = (operation, startNum) => {
