@@ -37,6 +37,7 @@ class GameBoard extends React.Component {
           victoryCounter: [...prevState.victoryCounter, updateCounter, ' '],
           operations: endGameOperation
         }));      
+        this.props.updateScore(updateCounter, this.props.gamerName);
       }
       this.props.activeNextPlayer();
     }    

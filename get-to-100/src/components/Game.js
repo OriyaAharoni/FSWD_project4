@@ -6,13 +6,16 @@ import StartGameButton from './StartGameButton.js';
 
 let temp = [];
 let playersTemp = [];
+let topPlayersTemp = [];
 class Game extends Component {
   constructor(props) {
     super(props);
     this.state = {
       activatePlayers: temp,
       players: playersTemp,
-      currentGameBoardIndex: null
+      topPlayers : topPlayersTemp,
+      currentGameBoardIndex: null,
+      isGameStart: false
     };
   }
 
@@ -49,10 +52,11 @@ class Game extends Component {
 
   addPlayer = (playerName) => {
     // Create a new game board component and add it to the list of game boards
-    const newGameBoard = <GameBoard key={this.state.activatePlayers.length+1} gamerName={playerName} isActive={false} activeNextPlayer={this.activeNextPlayer} removePlayer={this.removePlayer}/>;
-    
+    const newGameBoard = <GameBoard key={this.state.activatePlayers.length+1} gamerName={playerName} isActive={false} activeNextPlayer={this.activeNextPlayer} removePlayer={this.removePlayer} updateScore={this.updateScore}/>;
+    const newPlayer = {gamerName: playerName, victoryCounter: [] };
     this.setState(prevState => ({
-      activatePlayers: [...prevState.activatePlayers, newGameBoard]
+      activatePlayers: [...prevState.activatePlayers, newGameBoard],
+      players: [...prevState.players, newPlayer]
     }));
   };
 
@@ -79,19 +83,53 @@ class Game extends Component {
       console.log(this.state.activatePlayers);
     });
   }
+
+  checkTopPlayers = (playersTemp) => {
+    // 
+    // Create a new array of players sorted by the smallest number of steps to win
+    const sortedPlayers = playersTemp.sort((a, b) => {
+      const aSmallestSteps = Math.min(...a.victoryCounter);
+      const bSmallestSteps = Math.min(...b.victoryCounter);
+      return aSmallestSteps - bSmallestSteps;
+    });
+
+    // Get the names of the top 3 players
+    const topPlayers = sortedPlayers.slice(0, 3).map((player) => player.gamerName);
+
+    // Update the state with the new top players
+    return topPlayers;
+  }
+
+  updateScore = (score, name) => {
+    playersTemp = [...this.state.players];
+    topPlayersTemp = [...this.state.topPlayers];
+    const index = playersTemp.findIndex(x => x.gamerName == name);
+    if (index != -1) {
+      playersTemp[index].victoryCounter.push(score); // modify the isActive prop of the first element
+      topPlayersTemp = this.checkTopPlayers(playersTemp);
+    }
+    this.setState({ 
+      players: playersTemp,
+      topPlayers: topPlayersTemp
+    }, () => {
+      console.log(this.state.players);
+    });
+  }
   
 
   startGame = () => {
     this.activatePlayer(0);
+    this.setState({isGameStart: true});
   }
 
   render() {
     // const boards = this.state.activatePlayers;
-    console.log('this is game render: ',this.state.activatePlayers);
+    console.log('this is game render: ',this.state.activatePlayers, this.state.isGameStart);
     return (
       <div>
-        <AddPlayerButton addPlayer={this.addPlayer} />
-        <StartGameButton startGame={this.startGame} />
+        <AddPlayerButton addPlayer={this.addPlayer} style={{visibility: this.state.isGameStart ? 'hidden' : 'visible'}} />
+        <StartGameButton startGame={this.startGame} style={{visibility: this.state.isGameStart ? 'hidden' : 'visible'}} />
+        <h1 style={{visibility: this.state.isGameStart ? 'visible' : 'hidden'}}>{this.topPlayers}</h1>
         <div className='game-container'>{this.state.activatePlayers}</div>
         {/* {this.state.activatePlayers} */}
       </div>
