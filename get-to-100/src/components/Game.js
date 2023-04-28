@@ -28,7 +28,7 @@ class Game extends Component {
     }
     this.setState({ 
       activatePlayers: temp,
-      currentGameBoardIndex: index // combine both state updates into one call
+      currentGameBoardIndex: index
     }, () => {
       console.log(this.state.activatePlayers);
     });
@@ -44,7 +44,7 @@ class Game extends Component {
     }
     this.setState({ 
       activatePlayers: temp,
-      currentGameBoardIndex: nextIndex // combine both state updates into one call
+      currentGameBoardIndex: nextIndex
     }, () => {
       console.log(this.state.activatePlayers);
     });
@@ -76,6 +76,19 @@ class Game extends Component {
       }
     }
     console.log('remove player: ',temp);
+    if (temp.length === 0){
+      temp = [];
+      playersTemp = [];
+      topPlayersTemp = [];
+      this.setState({
+        isGameStart: false,
+        activatePlayers: temp,
+        currentGameBoardIndex: null,
+        players: playersTemp,
+        topPlayers : topPlayersTemp,
+      });
+      return;
+    }
     this.setState({ 
       activatePlayers: temp,
       currentGameBoardIndex: index
@@ -95,7 +108,7 @@ class Game extends Component {
 
     // Get the names of the top 3 players
     const topPlayers = sortedPlayers.slice(0, 3).map((player) => player.gamerName);
-
+    
     // Update the state with the new top players
     return topPlayers;
   }
@@ -114,24 +127,39 @@ class Game extends Component {
     }, () => {
       console.log(this.state.players);
     });
-  }
-  
+  }  
 
   startGame = () => {
     this.activatePlayer(0);
     this.setState({isGameStart: true});
   }
 
+  endGame = () => {
+    temp = [];
+    playersTemp = [];
+    topPlayersTemp = [];
+    this.setState({
+      isGameStart: false,
+      activatePlayers: temp,
+      currentGameBoardIndex: null,
+      players: playersTemp,
+      topPlayers : topPlayersTemp,
+    });
+  }
+
   render() {
-    // const boards = this.state.activatePlayers;
     console.log('this is game render: ',this.state.activatePlayers, this.state.isGameStart);
     return (
       <div>
-        <AddPlayerButton addPlayer={this.addPlayer} style={{visibility: this.state.isGameStart ? 'hidden' : 'visible'}} />
-        <StartGameButton startGame={this.startGame} style={{visibility: this.state.isGameStart ? 'hidden' : 'visible'}} />
-        <h1 style={{visibility: this.state.isGameStart ? 'visible' : 'hidden'}}>{this.topPlayers}</h1>
+        <AddPlayerButton isGameStart={this.state.isGameStart} addPlayer={this.addPlayer} />
+        <StartGameButton isGameStart={this.state.isGameStart} startGame={this.startGame} style={{visibility: this.state.isGameStart ? 'hidden' : 'visible'}} />
+        <div className={this.state.isGameStart?'isVisible':'isHidden'}>
+          <h2>Top players:&nbsp;&nbsp;</h2>
+          {this.state.topPlayers.map(p => <h2>{p}&nbsp;&nbsp;</h2>)}
+        </div>
         <div className='game-container'>{this.state.activatePlayers}</div>
         {/* {this.state.activatePlayers} */}
+        <button className={this.state.isGameStart?'isVisible':'isHidden'} onClick={this.endGame}>End game</button>
       </div>
     );
   }

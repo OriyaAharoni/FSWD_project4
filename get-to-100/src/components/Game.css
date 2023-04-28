@@ -1,3 +1,14 @@
+.isVisible{
+  visibility: visible;
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+}
+
+.isHidden{
+  visibility: collapse;
+}
+
 .game-container {
     display: flex;
     flex-direction: row;

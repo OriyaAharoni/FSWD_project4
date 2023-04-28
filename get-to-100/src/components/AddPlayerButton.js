@@ -22,7 +22,7 @@ class AddPlayerButton extends Component {
     render() {
         console.log(this.props); // <-- add this line
       return (
-        <div>
+        <div style={{visibility: this.props.isGameStart ? 'hidden' : 'visible'}}>
           <input
             type="text"
             value={this.state.playerName}

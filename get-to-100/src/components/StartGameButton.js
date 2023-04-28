@@ -7,7 +7,7 @@ class StartGameButton extends Component {
   
     render() {
       return (
-        <div>
+        <div style={{visibility: this.props.isGameStart ? 'hidden' : 'visible'}}>
           <button onClick={this.props.startGame}>Start Game!</button>
         </div>
       );
