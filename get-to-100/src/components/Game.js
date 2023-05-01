@@ -100,7 +100,9 @@ class Game extends Component {
   checkTopPlayers = (playersTemp) => {
     // 
     // Create a new array of players sorted by the smallest number of steps to win
-    const sortedPlayers = playersTemp.sort((a, b) => {
+    const sortedPlayers = playersTemp
+    .filter((player) => player.victoryCounter.length > 0)
+    .sort((a, b) => {
       const aSmallestSteps = Math.min(...a.victoryCounter);
       const bSmallestSteps = Math.min(...b.victoryCounter);
       return aSmallestSteps - bSmallestSteps;
@@ -150,16 +152,16 @@ class Game extends Component {
   render() {
     console.log('this is game render: ',this.state.activatePlayers, this.state.isGameStart);
     return (
-      <div>
+      <div className='game'>
         <AddPlayerButton isGameStart={this.state.isGameStart} addPlayer={this.addPlayer} />
-        <StartGameButton isGameStart={this.state.isGameStart} startGame={this.startGame} style={{visibility: this.state.isGameStart ? 'hidden' : 'visible'}} />
+        <StartGameButton isGameStart={this.state.isGameStart} startGame={this.startGame} />
         <div className={this.state.isGameStart?'isVisible':'isHidden'}>
           <h2>Top players:&nbsp;&nbsp;</h2>
           {this.state.topPlayers.map(p => <h2>{p}&nbsp;&nbsp;</h2>)}
         </div>
         <div className='game-container'>{this.state.activatePlayers}</div>
         {/* {this.state.activatePlayers} */}
-        <button className={this.state.isGameStart?'isVisible':'isHidden'} onClick={this.endGame}>End game</button>
+        <button className={this.state.isGameStart?'isVisible button-game':'isHidden button-game'} onClick={this.endGame}>End game</button>
       </div>
     );
   }

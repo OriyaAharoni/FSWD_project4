@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import './Game.css';
 class AddPlayerButton extends Component {
     constructor(props) {
       super(props);
@@ -22,7 +22,7 @@ class AddPlayerButton extends Component {
     render() {
         console.log(this.props); // <-- add this line
       return (
-        <div style={{visibility: this.props.isGameStart ? 'hidden' : 'visible'}}>
+        <div className={this.props.isGameStart?'isHidden':'isVisible'}>
           <input
             type="text"
             value={this.state.playerName}
